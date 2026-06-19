@@ -1,4 +1,8 @@
 # Resumo-de-Not-cias-com-IA-e-Web-Scraping
+pip install python-dotenv langchain langchain-openai langchain-community
+Para Os dowloads das Bibliotecas.
+PYTHON
+
 import requests
 from bs4 import BeautifulSoup
 from agno.agent import Agent
@@ -62,3 +66,4 @@ def main():
 
 if _name_ == "_main_":
     main()
+    
