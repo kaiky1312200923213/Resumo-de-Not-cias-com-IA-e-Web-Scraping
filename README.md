@@ -1,0 +1,1 @@
+# Resumo-de-Not-cias-com-IA-e-Web-Scraping
