@@ -1,69 +1,30 @@
-# Resumo-de-Not-cias-com-IA-e-Web-Scraping
-pip install python-dotenv langchain langchain-openai langchain-community
-Para Os dowloads das Bibliotecas.
-PYTHON
+# Resumidor de Notícias com IA e Web Scraping
 
-import requests
-from bs4 import BeautifulSoup
-from agno.agent import Agent
-from agno.models.openai import OpenAIChat
+**Autor:** Kaiky Yoshio Ono Marins  
+**Categoria:** Python · Web scraping · IA generativa  
+**Status:** Protótipo de estudo
 
-API_KEY = "SEU_API"
+## Visão geral
 
-def extrair_artigo(url: str) -> str:
-    """Extrai o texto principal de um artigo web."""
-    headers = {"User-Agent": "Mozilla/5.0"}
-    try:
-        response = requests.get(url, headers=headers, timeout=10)
-        response.raise_for_status()
-        soup = BeautifulSoup(response.text, "html.parser")
+Experimento em Python que acessa uma página pública, extrai texto de artigos e envia o conteúdo para um agente de IA gerar um resumo em português. O exemplo usa Requests e BeautifulSoup para obter o texto e Agno para organizar a chamada ao modelo.
 
-        # Remove scripts e estilos
-        for tag in soup(["script", "style", "nav", "footer", "header"]):
-            tag.decompose()
+## Fluxo do exemplo
 
-        # Tenta pegar parágrafos do artigo
-        paragrafos = soup.find_all("p")
-        texto = " ".join(p.get_text(strip=True) for p in paragrafos if len(p.get_text(strip=True)) > 50)
+1. Acessa uma URL pública com uma requisição HTTP.
+2. Analisa o HTML e remove elementos de navegação e scripts.
+3. Extrai os parágrafos relevantes.
+4. Envia o texto extraído ao agente para resumir em três frases.
 
-        return texto[:3000] if texto else "Não foi possível extrair o conteúdo."
-    except Exception as e:
-        return f"Erro ao acessar a página: {e}"
+## Tecnologias
 
-agente = Agent(
-    model=OpenAIChat(
-        id="meta/llama-3.1-8b-instruct",
-        api_key=API_KEY,
-        base_url="https://integrate.api.nvidia.com/v1"
-    ),
-    instructions="""
-    Você é um assistente especialista em resumir artigos de tecnologia.
-    Quando receber um texto, resuma-o em exatamente 3 frases claras e objetivas em português.
-    Foque nos pontos mais importantes do artigo.
-    """
-)
+- Python
+- Requests
+- BeautifulSoup
+- Agno
+- Endpoint compatível com OpenAI / NVIDIA NIM
 
-def main():
-    print("=" * 55)
-    print("   📰 Resumidor de Notícias com IA")
-    print("=" * 55)
+## Material e execução
 
-    # URL de um artigo público de tecnologia
-    url = "https://www.tecmundo.com.br/inteligencia-artificial/o-que-e-inteligencia-artificial"
+O código original está em [MATERIAL-ORIGINAL.txt](./MATERIAL-ORIGINAL.txt). Instale as bibliotecas usadas no exemplo e configure a chave de API localmente antes de executar. Respeite os termos de uso, limites de acesso e políticas do site consultado; scraping não deve sobrecarregar serviços.
 
-    print(f"\n🔗 Acessando: {url}\n")
-    conteudo = extrair_artigo(url)
-
-    if "Erro" in conteudo:
-        print(conteudo)
-        return
-
-    print(f"✅ Conteúdo extraído ({len(conteudo)} caracteres)\n")
-    print("-" * 55)
-    print("🤖 Resumo gerado pela IA:\n")
-
-    agente.print_response(f"Resuma este artigo em 3 frases:\n\n{conteudo}")
-
-if _name_ == "_main_":
-    main()
-    
+© 2026 Kaiky Yoshio Ono Marins.
